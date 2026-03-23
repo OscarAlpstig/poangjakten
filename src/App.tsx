@@ -53,7 +53,7 @@ function App() {
   const [poang, setPoang] = useState<(number | null)[]>(Array(ovningar.length).fill(null));
 
   // Summering
-  const totalPoang = poang.reduce((sum, val) => val ? sum + val : sum, 0);
+  const totalPoang = poang.reduce((sum: number, val) => val ? sum + val : sum, 0);
   const maxPoang = ovningar.length * 10;
 
   return (
