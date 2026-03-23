@@ -1,3 +1,48 @@
+/* Utskriftsvänlig CSS */
+@media print {
+  body, .app-container {
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+  }
+  .app-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  table, th, td {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  th, td {
+    padding: 6px !important;
+    font-size: 12pt !important;
+  }
+  h1, h2, h3, h4, h5 {
+    color: #000 !important;
+    page-break-after: avoid;
+  }
+  input, button, select, textarea {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+  /* Dölj element som inte behövs vid utskrift */
+  nav, .hero, .no-print, .print-hide {
+    display: none !important;
+  }
+  /* Skriv ut på A4, stående */
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+  /* Undvik sidbrytning mitt i tabeller */
+  table {
+    page-break-inside: avoid;
+  }
+}
 .counter {
   font-size: 16px;
   padding: 5px 10px;

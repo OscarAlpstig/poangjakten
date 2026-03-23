@@ -1,121 +1,114 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
+import Ovning from './components/Ovning/Ovning';
+
+
+// Definition av övningar och poänglogik
+type Exercise = {
+  id: string;
+  name: string;
+  score: (input: any) => number;
+};
+
+const exercises: Exercise[] = [
+   // MEDEL
+  {
+    id: 'medium-1',
+    name: '1 skott',
+    score: (input: { shot: number }) => {
+      if (input.shot <= 4) return 1;
+      if (input.shot >= 10) return 10;
+      return input.shot + 1 - 4;
+    },
+  },
+  {
+    id: 'medium-2',
+    name: '15 skott, antal 8:or eller mer',
+    score: (input: { count8plus: number }) => {
+      if (input.count8plus <= 0) return 1;
+      if (input.count8plus >= 15) return 10;
+      return Math.min(10, Math.floor(input.count8plus / 2) + 1);
+    },
+  },
+  {
+    id: 'medium-3',
+    name: '3 skott',
+    score: (input: { total: number }) => {
+      if (input.total <= 16) return 1;
+      if (input.total >= 30) return 10;
+      return Math.min(10, Math.floor((input.total - 14) / 2));
+    },
+  },
+  {
+    id: 'medium-4',
+    name: '5 skott, gå > antal försök',
+    score: (input: { attempts: number }) => {
+      if (input.attempts <= 1) return 10;
+      if (input.attempts >= 10) return 1;
+      return Math.max(1, 11 - input.attempts);
+    },
+  },
+  {
+    id: 'medium-5',
+    name: '5 skott',
+    score: (input: { total: number }) => {
+      if (input.total <= 24) return 1;
+      if (input.total >= 50) return 10;
+      return Math.min(10, Math.floor((input.total - 23) / 3));
+    },
+  },
+  {
+    id: 'medium-6',
+    name: '10 skott, antal 9:or och 10:or',
+    score: (input: { count9plus: number }) => {
+      if (input.count9plus <= 0) return 1;
+      if (input.count9plus >= 10) return 10;
+      return input.count9plus + 1;
+    },
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  // En state per övning för input och score
+  const [inputs, setInputs] = useState<{ [id: string]: any }>({});
+  const [scores, setScores] = useState<{ [id: string]: number | null }>({});
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className="app-container">
+      <h1>Poängjakten</h1>
+      <table style={{ borderCollapse: 'collapse', width: '100%', maxWidth: 900, margin: 'auto' }}>
+        <thead>
+          <tr style={{ background: '#f0f0f0' }}>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>Övning</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>1p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>2p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>3p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>4p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>5p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>6p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>7p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>8p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>9p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>10p</th>
+            <th style={{ border: '1px solid #ccc', padding: 8 }}>Poäng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <Ovning
+            namn="1 skott"
+            beskrivning="Skjut ett skott och ange poängen (1-10)."
+            varden={[4,null,null,5,null,6,null,7,8,'9-10']}
+          />
+          <Ovning
+            namn="10 skott"
+            beskrivning="Skjut tio skott och ange antal 8:or eller mer."
+            varden={[1,2,3,4,5,6,7,8,9,10]}
+          />
+          {/* Lägg till fler Ovning-komponenter för andra övningar */}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default App
