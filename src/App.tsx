@@ -51,10 +51,12 @@ function App() {
 
   // State för valda poäng per övning (index = övningens index)
   const [poang, setPoang] = useState<(number | null)[]>(Array(ovningar.length).fill(null));
+  // State för extraövningens poäng
+  const [extraPoang, setExtraPoang] = useState<number | null>(null);
 
-  // Summering
-  const totalPoang = poang.reduce((sum: number, val) => val ? sum + val : sum, 0);
-  const maxPoang = ovningar.length * 10;
+  // Summering (inklusive extraövning om den finns)
+  const totalPoang = poang.reduce((sum: number, val) => val ? sum + val : sum, 0) + (extraPoang ? extraPoang : 0);
+  const maxPoang = (ovningar.length + (extraPoang !== null ? 1 : 0)) * 10;
 
   return (
     <div className="app-container">
@@ -104,6 +106,14 @@ function App() {
                 minIdx = idx;
               }
             });
+
+            // Spara senaste extraövningsindex i en ref för att kunna nollställa extraPoang om den byts
+            const [lastExtraIdx, setLastExtraIdx] = useState<number | null>(null);
+            if (minIdx !== lastExtraIdx) {
+              if (extraPoang !== null) setExtraPoang(null);
+              setLastExtraIdx(minIdx);
+            }
+
             if (minIdx !== null) {
               const ovning = ovningar[minIdx];
               return (
@@ -112,11 +122,13 @@ function App() {
                   namn={"Extra: " + ovning.namn}
                   beskrivning={"Extra träning på din svagaste övning."}
                   varden={ovning.varden}
-                  onScore={() => {}}
+                  onScore={setExtraPoang}
                 />
               );
+            } else {
+              if (extraPoang !== null) setExtraPoang(null);
+              return null;
             }
-            return null;
           })()}
         </tbody>
       </table>
