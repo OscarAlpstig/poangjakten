@@ -3,7 +3,7 @@ import { useState } from 'react';
 interface OvningProps {
     namn: string;
     beskrivning: string;
-    varden: (string | number)[]; // Värden som motsvarar poäng 1-10
+    varden: (string | number | null)[]; // Värden som motsvarar poäng 1-10
     onScore?: (score: number) => void;
 }
 
