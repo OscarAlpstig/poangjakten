@@ -1,11 +1,60 @@
+
+import { useState } from 'react';
 import './App.css'
 import Ovning from './components/Ovning/Ovning';
 
 
 function App() {
-  // En state per övning för input och score
-  // const [inputs, setInputs] = useState<{ [id: string]: any }>({});
-  // const [scores, setScores] = useState<{ [id: string]: number | null }>({});
+  // Lista med övningar och poängmatriser
+  const ovningar = [
+    {
+      namn: "1 skott",
+      beskrivning: "Skjut ett skott och ange poängen (4-10).",
+      varden: [4,null,null,5,null,6,null,7,8,'9-10']
+    },
+    {
+      namn: "10 skott",
+      beskrivning: "Skjut tio skott och ange antal 8:or eller mer.",
+      varden: [1,2,3,4,5,6,7,8,9,10]
+    },
+    {
+      namn: "3 skott",
+      beskrivning: "Skjut tre skott och ange poängen (18-30).",
+      varden: [18,19,20,21,22,23,24,25,26,'27-30']
+    },
+    {
+      namn: "Skjut >9",
+      beskrivning: "Antal försök för 9 eller högre.",
+      varden: [10,9,8,7,6,5,4,3,2,1]
+    },
+    {
+      namn: "5 skott",
+      beskrivning: "Poäng efter 5 skott.",
+      varden: [38,39,40,41,42,43,44,45,46,'47-50']
+    },
+    {
+      namn: "10 skott",
+      beskrivning: "Poäng efter 10 skott.",
+      varden: ['>67',68,69,70,'71-74','75-79','80-84','85-89','90-93','94-100']
+    },
+    {
+      namn: "2 skott",
+      beskrivning: "Poäng efter 2 skott.",
+      varden: [10,11,12,13,14,15,16,17,18,'19-20']
+    },
+    {
+      namn: "10 skott 9 eller mer",
+      beskrivning: "Antal skott med poäng 9 eller mer.",
+      varden: [1,2,3,4,5,6,7,8,9,10]
+    },
+  ];
+
+  // State för valda poäng per övning (index = övningens index)
+  const [poang, setPoang] = useState<(number | null)[]>(Array(ovningar.length).fill(null));
+
+  // Summering
+  const totalPoang = poang.reduce((sum, val) => val ? sum + val : sum, 0);
+  const maxPoang = ovningar.length * 10;
 
   return (
     <div className="app-container">
@@ -28,19 +77,26 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          <Ovning
-            namn="1 skott"
-            beskrivning="Skjut ett skott och ange poängen (1-10)."
-            varden={[4,null,null,5,null,6,null,7,8,'9-10']}
-          />
-          <Ovning
-            namn="10 skott"
-            beskrivning="Skjut tio skott och ange antal 8:or eller mer."
-            varden={[1,2,3,4,5,6,7,8,9,10]}
-          />
-          {/* Lägg till fler Ovning-komponenter för andra övningar */}
+          {ovningar.map((ovning, i) => (
+            <Ovning
+              key={i}
+              namn={ovning.namn}
+              beskrivning={ovning.beskrivning}
+              varden={ovning.varden}
+              onScore={(score) => {
+                setPoang(prev => {
+                  const arr = [...prev];
+                  arr[i] = score;
+                  return arr;
+                });
+              }}
+            />
+          ))}
         </tbody>
       </table>
+      <div style={{ maxWidth: 900, margin: '24px auto 0', fontSize: '1.2em', textAlign: 'right' }}>
+        <b>Summa:</b> {totalPoang} / {maxPoang}
+      </div>
     </div>
   );
 }
