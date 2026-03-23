@@ -92,6 +92,32 @@ function App() {
               }}
             />
           ))}
+
+          {/* Extra övning på sämsta resultat */}
+          {(() => {
+            // Hitta index för sämsta (lägsta) poäng, men bara bland de som är ifyllda
+            let minIdx: number | null = null;
+            let minVal: number | null = null;
+            poang.forEach((val, idx) => {
+              if (val !== null && (minVal === null || val < minVal)) {
+                minVal = val;
+                minIdx = idx;
+              }
+            });
+            if (minIdx !== null) {
+              const ovning = ovningar[minIdx];
+              return (
+                <Ovning
+                  key={"extra-" + minIdx}
+                  namn={"Extra: " + ovning.namn}
+                  beskrivning={"Extra träning på din svagaste övning."}
+                  varden={ovning.varden}
+                  onScore={() => {}}
+                />
+              );
+            }
+            return null;
+          })()}
         </tbody>
       </table>
       <div style={{ maxWidth: 900, margin: '24px auto 0', fontSize: '1.2em', textAlign: 'right' }}>
