@@ -61,24 +61,25 @@ function App() {
   return (
     <div className="app-container">
       <h1>Poängjakten</h1>
-      <table style={{ borderCollapse: 'collapse', width: '100%', maxWidth: 900, margin: 'auto' }}>
-        <thead>
-          <tr style={{ background: '#f0f0f0' }}>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>Övning</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>1p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>2p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>3p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>4p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>5p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>6p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>7p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>8p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>9p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>10p</th>
-            <th style={{ border: '1px solid #ccc', padding: 8 }}>Poäng</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="table-wrapper">
+        <table className="score-table">
+          <thead>
+            <tr style={{ background: '#f0f0f0' }}>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>Övning</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>1p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>2p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>3p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>4p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>5p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>6p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>7p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>8p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>9p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>10p</th>
+              <th style={{ border: '1px solid #ccc', padding: 8 }}>Poäng</th>
+            </tr>
+          </thead>
+          <tbody>
           {ovningar.map((ovning, i) => (
             <Ovning
               key={i}
@@ -132,7 +133,8 @@ function App() {
           })()}
         </tbody>
       </table>
-      <div style={{ maxWidth: 900, margin: '24px auto 0', fontSize: '1.2em', textAlign: 'right' }}>
+      </div>
+      <div className="score-summary">
         <b>Summa:</b> {totalPoang} / {maxPoang}
       </div>
     </div>

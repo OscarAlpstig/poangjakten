@@ -198,6 +198,42 @@
   }
 }
 
+.app-container {
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 0 auto;
+  padding: 0 4px;
+}
+
+.score-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+.score-summary {
+  max-width: 900px;
+  margin: 24px auto 0;
+  font-size: 1.2em;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .score-summary {
+    font-size: 1.05em;
+    text-align: left;
+  }
+
+  .app-container {
+    padding: 12px;
+  }
+}
+
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
